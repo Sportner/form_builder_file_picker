@@ -1,20 +1,20 @@
 name: form_builder_file_picker
 description: FilePicker Field for flutter_form_builder package. Used to select files as part of form input.
-version: 1.0.0
-homepage: https://github.com/danvick/form_builder_file_picker
+version: 6.0.0
+homepage: https://github.com/sportner/form_builder_file_picker
 
 environment:
-  sdk: ">=2.5.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  flutter_form_builder: ^4.2.0
-  file_picker: ^2.1.4
-  permission_handler: ^5.0.1+1
-  file_picker_platform_interface: ^2.0.0
-  community_material_icon: ^5.8.55
+  flutter_form_builder:
+    git: https://github.com/Sportner/flutter_form_builder.git
+  file_picker: 3.0.0
+  permission_handler: ^6.1.1
+  community_material_icon: ^5.9.55
 
 dev_dependencies:
   flutter_test:
