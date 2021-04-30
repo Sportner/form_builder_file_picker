@@ -8,16 +8,33 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+class Position {
+  final double? top;
+  final double? left;
+  final double? right;
+  final double? bottom;
+
+  const Position({this.top, this.left, this.right, this.bottom});
+}
+
 /// Field for image(s) from user device storage
 class FormBuilderImagePicker extends FormBuilderField<PlatformFile?> {
   final double? width;
   final double? height;
+
+  /// Image preview boxfit
+  final BoxFit boxFit;
 
   /// Widget to be tapped on by user in order to pick file
   final Widget selectWidget;
 
   /// Widget to be tapped on by user in order to cancel file
   final Widget cancelWidget;
+
+  /// Determine cancelWidget and selectWidget position.
+  final Position actionPosition;
+
+  final Widget placeHolder;
 
   /// Allowed file extensions for files to be selected
   final List<String>? allowedExtensions;
@@ -38,6 +55,8 @@ class FormBuilderImagePicker extends FormBuilderField<PlatformFile?> {
   /// which can be useful for uploading and processing large files.
   final bool withReadStream;
 
+
+
   /// Creates field for image(s) from user device storage
   FormBuilderImagePicker({
     //From Super
@@ -55,10 +74,13 @@ class FormBuilderImagePicker extends FormBuilderField<PlatformFile?> {
     FocusNode? focusNode,
     this.width = null,
     this.height = null,
+    this.boxFit = BoxFit.cover,
     this.withData = false,
     this.withReadStream = false,
     this.selectWidget = const Icon(Icons.add_circle),
     this.cancelWidget = const Icon(Icons.delete),
+    this.actionPosition = const Position(top:8, right: 8),
+    this.placeHolder = const Center(child:Text("No picture selected")),
     this.allowedExtensions,
     this.onFileLoading,
     this.allowCompression,
@@ -138,7 +160,7 @@ class _FormBuilderFilePickerState
       debugPrint(e.toString());
     }
     // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
+    // message was in flight, we want to discard the reply rathstateer than calling
     // setState to update our non-existent appearance.
     if (!mounted) return;
 
@@ -159,7 +181,6 @@ class _FormBuilderFilePickerState
 
   Widget defaultFileViewer(
       PlatformFile? file, FormFieldState<PlatformFile?> field) {
-    final theme = Theme.of(context);
 
     return Container(
       height: widget.height,
@@ -167,12 +188,16 @@ class _FormBuilderFilePickerState
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
+          if (file == null)
+            Positioned.fill(child: widget.placeHolder),
           if (file != null)
-            Positioned.fill(child: Image.file(File(file.path!), width:widget.width, height:widget.height,fit: BoxFit.cover)),
+            Positioned.fill(child: Image.file(File(file.path!), width:widget.width, height:widget.height,fit: widget.boxFit)),
           if (enabled)
             Positioned(
-                top: 0,
-                right: 0,
+                top: widget.actionPosition.top,
+                right: widget.actionPosition.right,
+                bottom: widget.actionPosition.bottom,
+                left: widget.actionPosition.left,
                 child: _remainingItemCount
                     ? InkWell(
                         child: widget.selectWidget,

@@ -12,7 +12,7 @@ dependencies:
 
   flutter_form_builder:
     git: https://github.com/Sportner/flutter_form_builder.git
-  file_picker: 3.0.0
+  file_picker: 3.0.1
   permission_handler: ^6.1.1
   community_material_icon: ^5.9.55
 
